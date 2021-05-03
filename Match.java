@@ -15,11 +15,17 @@ public class Match implements IMatch{
 		this.B=B;
 		this.date=date;
 	}
+	/**
+	 * getTeam1 returns the first team in match.
+	 */
 	@Override
 	public ITeam getTeam1()
 	{
 		return A;
 	}
+	/**
+	 * getTeam2 returns the second team in match.
+	 */
 	@Override
 	public ITeam getTeam2()
 	{
