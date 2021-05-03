@@ -15,6 +15,10 @@ public class Team implements ITeam{
 		this.captainName=captainName;
 		this.teamSize=teamSize;
 	}
+	public String toString()
+	{
+		return "Team Name : "+this.getTeamName()+"\nCaptain Name : "+this.getCaptainName()+"\nID : "+this.getID()+"\n"+"Team Members : "+this.getTeam();
+	}
 	@Override
 	public void addMember(String name)
 	{

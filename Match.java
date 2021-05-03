@@ -11,15 +11,8 @@ public class Match implements IMatch{
 		this.B=B;
 		this.date=date;
 	}
-	@Override
-	public void printMatchDetails()
+	public String toString()
 	{
-		System.out.println(this.A.getTeamName()+" Vs "+this.B.getTeamName());
-		System.out.println(this.A.getCaptainName()+" Vs "+this.B.getCaptainName());
-		System.out.println("Match is scheduled on "+this.date);
-		System.out.println("First team Details are : ");
-		this.A.printTeam();
-		System.out.println("Second team Details are : ");
-		this.B.printTeam();
+		return this.A.getTeamName()+" Vs "+this.B.getTeamName()+"\n"+this.A.getCaptainName()+" Vs "+this.B.getCaptainName()+"\nMatch is scheduled on "+this.date+"\nFirst team Details are : \n"+this.A+"\nSecond team Details are : "+this.B;
 	}
 }

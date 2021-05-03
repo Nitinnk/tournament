@@ -24,12 +24,8 @@ public class BoxingTeam extends Team{
 	public void setWeight(int weight) {
 		this.weight = weight;
 	}
-
-	public void printTeam()
+	public String toString()
 	{
-		System.out.println("Boxing Team Details: ");
-		System.out.println("Boxer Name : "+this.getCaptainName());
-		System.out.println("Boxer Age : "+this.getAge());
-		System.out.println("Boxer Weight : "+this.getWeight());
+		return "Team Name : "+this.getTeamName()+"\nBoxer Name : "+this.getCaptainName()+"\nID : "+this.getID()+"\nBoxer Age : "+this.getAge()+"\nBoxer Weight : "+this.getWeight();
 	}
 }

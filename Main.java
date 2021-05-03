@@ -58,39 +58,41 @@ public class Main {
 			break;
 		case 3:
 			int teamID1=takeIDInput(in,tournament);
-			tournament.printTeamDetails(teamID1);
+			ITeam team=tournament.getCurrentTeam(teamID1);
+			System.out.println(team);
+			//tournament.printTeamDetails(teamID1);
 			askHomePage(in,tournament);
 			break;
 		case 4:
-			tournament.printAllTeams();
+			printAllTeams(tournament);
 			askHomePage(in,tournament);
 			break;
 		case 5:
-			tournament.printAllCricketTeams();
+			printAllCricketTeams(tournament);
 			askHomePage(in,tournament);
 			break;
 		case 6:
-			tournament.printAllBoxingTeams();
+			printAllBoxingTeams(tournament);
 			askHomePage(in,tournament);
 			break;
 		case 7:
-			tournament.printAllVolleyBallTeams();
+			printAllVolleyBallTeams(tournament);
 			askHomePage(in,tournament);
 			break;
 		case 8:
-			tournament.printAllMatchesSchedule();
+			printAllMatchesSchedule(tournament);
 			askHomePage(in,tournament);
 			break;
 		case 9:
-			tournament.printAllCricketMatchSchedules();
+			printAllCricketMatchSchedules(tournament);
 			askHomePage(in,tournament);
 			break;
 		case 10:
-			tournament.printAllBoxingMatchSchedules();
+			printAllBoxingMatchSchedules(tournament);
 			askHomePage(in,tournament);
 			break;
 		case 11:
-			tournament.printAllVolleyBallMatchSchedules();
+			printAllVolleyBallMatchSchedules(tournament);
 			askHomePage(in,tournament);
 			break;
 		case 12:
@@ -124,6 +126,123 @@ public class Main {
 		}
 		return 0;
 	}
+	public static void askHomePage(Scanner in,Tournament tournament)
+	{
+		System.out.println("1-Go Back to HomePage");
+		System.out.println("2-Exit");
+		switch(in.nextInt())
+		{
+		case 1:homePage(in,tournament);
+		break;
+		case 2:
+			System.exit(0);
+			default:
+				System.out.println("Invalid Input");
+				System.exit(0);
+		}
+	}
+	public static void printAllCricketMatchSchedules(Tournament tournament)
+	{
+		if(tournament.getCricketSchedule()==null)
+		{
+			System.out.println("No Cricket Match is scheduled yet\n");
+			return;
+		}
+		System.out.println("Cricket Matches : ");
+		for(IMatch cm:tournament.getCricketSchedule())
+		{
+			System.out.println(cm.toString());
+		}
+		System.out.println();
+	}
+	public static void printAllBoxingMatchSchedules(Tournament tournament)
+	{
+		if(tournament.getBoxingSchedule()==null)
+		{
+			System.out.println("No Boxing Match is scheduled yet\n");
+			return;
+		}
+		System.out.println("Boxing Matches : ");
+		for(IMatch bm:tournament.getBoxingSchedule())
+		{
+			System.out.println(bm.toString());
+		}
+		System.out.println();
+	}
+	public static void printAllVolleyBallMatchSchedules(Tournament tournament)
+	{
+		if(tournament.getVolleyBallSchedule()==null)
+		{
+			System.out.println("No VolleyBall Match is scheduled yet\n");
+			return;
+		}
+		System.out.println("VolleyBall Matches : ");
+		for(IMatch vm:tournament.getVolleyBallSchedule())
+		{
+			System.out.println(vm.toString());
+		}
+		System.out.println();
+	}
+	public static void printAllMatchesSchedule(Tournament tournament)
+	{
+		if(!tournament.checkRegistered())
+		{
+			System.out.println("No Match is scheduled yet\n");
+			return;
+		}
+		printAllCricketMatchSchedules(tournament);
+		printAllBoxingMatchSchedules(tournament);
+		printAllVolleyBallMatchSchedules(tournament);
+		System.out.println();
+	}
+	public static void printAllTeams(Tournament tournament)
+	{
+		if(tournament.getVolleyBallTeamsList()==null && tournament.getBoxingTeamsList()==null && tournament.getCricketTeamsList()==null)
+		{
+			System.out.println("No Team is registered yet\n");
+			return;
+		}
+		System.out.println("All Cricket Teams List : ");
+		printAllCricketTeams(tournament);
+		System.out.println("All Boxing Teams List : ");
+		printAllBoxingTeams(tournament);
+		System.out.println("All VolleyBall Teams List : ");
+		printAllVolleyBallTeams(tournament);
+	}
+	public static void printAllCricketTeams(Tournament tournament)
+	{
+		if(tournament.getCricketTeamsList()==null)
+		{
+			System.out.println("No Cricket Team is registered yet\n");
+			return;
+		}	
+		for(CricketTeam ct:tournament.getCricketTeamsList())
+		{
+			System.out.println(ct);
+		}
+			
+	}
+	public static void printAllBoxingTeams(Tournament tournament)
+	{
+		if(tournament.getBoxingTeamsList()==null)
+		{
+			System.out.println("No Boxing Team is registered yet\n");
+			return;
+		}	
+		for(BoxingTeam bt:tournament.getBoxingTeamsList())
+			System.out.println(bt);
+	}
+	public static void printAllVolleyBallTeams(Tournament tournament)
+	{
+		if(tournament.getVolleyBallTeamsList()==null)
+		{
+			System.out.println("No VolleyBall Team is registered yet\n");
+			return;
+		}	
+		for(VolleyBallTeam vt:tournament.getVolleyBallTeamsList())
+			System.out.println(vt);
+	}
+	
 	public static void askBoxingTeamDetails(Scanner in,String sportName,Tournament tournament)
 	{
 		System.out.println("Enter the Team Name : ");
@@ -138,7 +257,7 @@ public class Main {
 		int boxerWeight=in.nextInt();
 		ITeam boxingTeam=SportTeamFactory.getClass(sportName,teamID, teamName,boxerName,boxerAge,boxerWeight);
 		boxingTeam.addMember(boxerName);
-		boxingTeam.printTeam();
+		System.out.println(boxingTeam);
 		tournament.addBoxingTeam((BoxingTeam) boxingTeam);
 		askHomePage(in,tournament);
 	}
@@ -158,7 +277,7 @@ public class Main {
 			cricketTeam.addMember(in.next());
 			System.out.println();
 		}
-		cricketTeam.printTeam();
+		System.out.println(cricketTeam);
 		tournament.addCricketTeam((CricketTeam) cricketTeam);
 		askHomePage(in,tournament);
 	}
@@ -178,23 +297,9 @@ public class Main {
 			volleyBallTeam.addMember(in.next());
 			System.out.println();
 		}
-		volleyBallTeam.printTeam();
+		System.out.println(volleyBallTeam);
 		tournament.addVolleyBallTeam((VolleyBallTeam) volleyBallTeam);
 		askHomePage(in,tournament);
 	}
-	public static void askHomePage(Scanner in,Tournament tournament)
-	{
-		System.out.println("1-Go Back to HomePage");
-		System.out.println("2-Exit");
-		switch(in.nextInt())
-		{
-		case 1:homePage(in,tournament);
-		break;
-		case 2:
-			System.exit(0);
-			default:
-				System.out.println("Invalid Input");
-				System.exit(0);
-		}
-	}
+	
 }

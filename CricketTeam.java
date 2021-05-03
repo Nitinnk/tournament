@@ -6,10 +6,4 @@ public class CricketTeam extends Team{
 	{
 		super(id,teamName,captainName,11);
 	}
-	public void printTeam()
-	{
-		System.out.println("Cricket Team Details: ");
-		super.printTeam();
-	}
-	
 }
