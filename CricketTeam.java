@@ -2,7 +2,7 @@ package tournament;
 
 public class CricketTeam extends Team{
 	
-	CricketTeam(int id,String teamName,String captainName)
+	public CricketTeam(int id,String teamName,String captainName)
 	{
 		super(id,teamName,captainName,11);
 	}

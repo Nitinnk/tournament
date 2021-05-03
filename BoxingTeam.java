@@ -2,7 +2,7 @@ package tournament;
 
 public class BoxingTeam extends Team{
 	private int age,weight;
-	BoxingTeam(int id,String teamName,String captainName,int age,int weight)
+	public BoxingTeam(int id,String teamName,String captainName,int age,int weight)
 	{
 		super(id,teamName,captainName,1);
 		this.age=age;
