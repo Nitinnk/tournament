@@ -5,6 +5,5 @@ public interface ITeam {
 	public String getTeamName();
 	public String getCaptainName();
 	public int getTeamSize();
-	public void printTeam();
 	public void addMember(String name);
 }

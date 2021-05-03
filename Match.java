@@ -11,8 +11,18 @@ public class Match implements IMatch{
 		this.B=B;
 		this.date=date;
 	}
+	@Override
+	public ITeam getTeam1()
+	{
+		return A;
+	}
+	@Override
+	public ITeam getTeam2()
+	{
+		return B;
+	}
 	public String toString()
 	{
-		return this.A.getTeamName()+" Vs "+this.B.getTeamName()+"\n"+this.A.getCaptainName()+" Vs "+this.B.getCaptainName()+"\nMatch is scheduled on "+this.date+"\nFirst team Details are : \n"+this.A+"\nSecond team Details are : "+this.B;
+		return this.A.getTeamName()+" Vs "+this.B.getTeamName()+"\n"+this.A.getCaptainName()+" Vs "+this.B.getCaptainName()+"\nMatch is scheduled on "+this.date+"\nFirst team Details are : \n"+this.A+"\nSecond team Details are : \n"+this.B;
 	}
 }

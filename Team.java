@@ -31,15 +31,6 @@ public class Team implements ITeam{
 		return this.teamMembers;
 	}
 	@Override
-	public void printTeam()
-	{
-		System.out.println("Captain is "+this.captainName);
-		for(String member:this.teamMembers)
-		{
-			System.out.println(member);
-		}
-	}
-	@Override
 	public int getTeamSize() {
 		return teamSize;
 	}
@@ -62,7 +53,6 @@ public class Team implements ITeam{
 	}
 	@Override
 	public int getID() {
-		// TODO Auto-generated method stub
 		return this.id;
 	}
 	

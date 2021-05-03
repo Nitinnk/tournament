@@ -47,20 +47,29 @@ public class Main {
 					{
 						askVolleyBallTeamDetails(in,sportName,tournament);
 					}
+					else
+					{
+						System.out.println("Invalid Input");
+						askHomePage(in,tournament);
+					}
 				}
 			}
 			break;
 		case 2:
 			int teamID=takeIDInput(in,tournament);
-			tournament.exit(teamID);
-			System.out.println("Successfully Exited from the tournament");
+			if(tournament.getAllMatchesSchedule().checkTeamPresence(teamID))
+				System.out.println("Cannot exit the tournament after match is scheduled");
+			else
+			{
+				tournament.exit(teamID);
+				System.out.println("Successfully Exited from the tournament");
+			}
 			askHomePage(in,tournament);
 			break;
 		case 3:
 			int teamID1=takeIDInput(in,tournament);
 			ITeam team=tournament.getCurrentTeam(teamID1);
 			System.out.println(team);
-			//tournament.printTeamDetails(teamID1);
 			askHomePage(in,tournament);
 			break;
 		case 4:
@@ -80,19 +89,35 @@ public class Main {
 			askHomePage(in,tournament);
 			break;
 		case 8:
-			printAllMatchesSchedule(tournament);
+			tournament.scheduleAllMatches();
+			if(tournament.getAllMatchesSchedule().equals(null))
+				System.out.println("No Matches are scheduled yet");
+			else
+				System.out.println(tournament.getAllMatchesSchedule());
 			askHomePage(in,tournament);
 			break;
 		case 9:
-			printAllCricketMatchSchedules(tournament);
+			ISchedule temp=tournament.getCricketScheduleToMain();
+			if(temp==null)
+				System.out.println("No Cricket Matches are scheduled yet");
+			else
+				System.out.println(temp);
 			askHomePage(in,tournament);
 			break;
 		case 10:
-			printAllBoxingMatchSchedules(tournament);
+			ISchedule temp1=tournament.getBoxingScheduleToMain();
+			if(temp1==null)
+				System.out.println("No Boxing Matches are scheduled yet");
+			else
+				System.out.println(temp1);
 			askHomePage(in,tournament);
 			break;
 		case 11:
-			printAllVolleyBallMatchSchedules(tournament);
+			ISchedule temp2=tournament.getVolleyBallScheduleToMain();
+			if(temp2==null)
+				System.out.println("No VolleyBall Matches are scheduled yet");
+			else
+				System.out.println(temp2);
 			askHomePage(in,tournament);
 			break;
 		case 12:
@@ -105,6 +130,11 @@ public class Main {
 	}
 	public static int takeIDInput(Scanner in,Tournament tournament)
 	{
+		if(!tournament.checkRegistered())
+		{
+			System.out.println("No team is Registered until now");
+			askHomePage(in,tournament);
+		}
 		System.out.println("Enter the Team ID : ");
 		int id=in.nextInt();
 		if(tournament.isPresent(id))
@@ -121,6 +151,7 @@ public class Main {
 			case 'n':
 				System.exit(0);
 				default:
+					System.out.println("Invalid Input");
 					System.exit(0);
 			}
 		}
@@ -141,108 +172,6 @@ public class Main {
 				System.exit(0);
 		}
 	}
-	public static void printAllCricketMatchSchedules(Tournament tournament)
-	{
-		if(tournament.getCricketSchedule()==null)
-		{
-			System.out.println("No Cricket Match is scheduled yet\n");
-			return;
-		}
-		System.out.println("Cricket Matches : ");
-		for(IMatch cm:tournament.getCricketSchedule())
-		{
-			System.out.println(cm.toString());
-		}
-		System.out.println();
-	}
-	public static void printAllBoxingMatchSchedules(Tournament tournament)
-	{
-		if(tournament.getBoxingSchedule()==null)
-		{
-			System.out.println("No Boxing Match is scheduled yet\n");
-			return;
-		}
-		System.out.println("Boxing Matches : ");
-		for(IMatch bm:tournament.getBoxingSchedule())
-		{
-			System.out.println(bm.toString());
-		}
-		System.out.println();
-	}
-	public static void printAllVolleyBallMatchSchedules(Tournament tournament)
-	{
-		if(tournament.getVolleyBallSchedule()==null)
-		{
-			System.out.println("No VolleyBall Match is scheduled yet\n");
-			return;
-		}
-		System.out.println("VolleyBall Matches : ");
-		for(IMatch vm:tournament.getVolleyBallSchedule())
-		{
-			System.out.println(vm.toString());
-		}
-		System.out.println();
-	}
-	public static void printAllMatchesSchedule(Tournament tournament)
-	{
-		if(!tournament.checkRegistered())
-		{
-			System.out.println("No Match is scheduled yet\n");
-			return;
-		}
-		printAllCricketMatchSchedules(tournament);
-		printAllBoxingMatchSchedules(tournament);
-		printAllVolleyBallMatchSchedules(tournament);
-		System.out.println();
-	}
-	public static void printAllTeams(Tournament tournament)
-	{
-		if(tournament.getVolleyBallTeamsList()==null && tournament.getBoxingTeamsList()==null && tournament.getCricketTeamsList()==null)
-		{
-			System.out.println("No Team is registered yet\n");
-			return;
-		}
-		System.out.println("All Cricket Teams List : ");
-		printAllCricketTeams(tournament);
-		System.out.println("All Boxing Teams List : ");
-		printAllBoxingTeams(tournament);
-		System.out.println("All VolleyBall Teams List : ");
-		printAllVolleyBallTeams(tournament);
-	}
-	public static void printAllCricketTeams(Tournament tournament)
-	{
-		if(tournament.getCricketTeamsList()==null)
-		{
-			System.out.println("No Cricket Team is registered yet\n");
-			return;
-		}	
-		for(CricketTeam ct:tournament.getCricketTeamsList())
-		{
-			System.out.println(ct);
-		}
-			
-	}
-	public static void printAllBoxingTeams(Tournament tournament)
-	{
-		if(tournament.getBoxingTeamsList()==null)
-		{
-			System.out.println("No Boxing Team is registered yet\n");
-			return;
-		}	
-		for(BoxingTeam bt:tournament.getBoxingTeamsList())
-			System.out.println(bt);
-	}
-	public static void printAllVolleyBallTeams(Tournament tournament)
-	{
-		if(tournament.getVolleyBallTeamsList()==null)
-		{
-			System.out.println("No VolleyBall Team is registered yet\n");
-			return;
-		}	
-		for(VolleyBallTeam vt:tournament.getVolleyBallTeamsList())
-			System.out.println(vt);
-	}
-	
 	public static void askBoxingTeamDetails(Scanner in,String sportName,Tournament tournament)
 	{
 		System.out.println("Enter the Team Name : ");
@@ -301,5 +230,51 @@ public class Main {
 		tournament.addVolleyBallTeam((VolleyBallTeam) volleyBallTeam);
 		askHomePage(in,tournament);
 	}
-	
+	public static void printAllTeams(Tournament tournament)
+	{
+		if(tournament.getVolleyBallTeamsList()==null && tournament.getBoxingTeamsList()==null && tournament.getCricketTeamsList()==null)
+		{
+			System.out.println("No Team is registered yet\n");
+			return;
+		}
+		System.out.println("All Cricket Teams List : ");
+		printAllCricketTeams(tournament);
+		System.out.println("All Boxing Teams List : ");
+		printAllBoxingTeams(tournament);
+		System.out.println("All VolleyBall Teams List : ");
+		printAllVolleyBallTeams(tournament);
+	}
+	public static void printAllCricketTeams(Tournament tournament)
+	{
+		if(tournament.getCricketTeamsList()==null)
+		{
+			System.out.println("No Cricket Team is registered yet\n");
+			return;
+		}	
+		for(CricketTeam ct:tournament.getCricketTeamsList())
+		{
+			System.out.println(ct);
+		}
+			
+	}
+	public static void printAllBoxingTeams(Tournament tournament)
+	{
+		if(tournament.getBoxingTeamsList()==null)
+		{
+			System.out.println("No Boxing Team is registered yet\n");
+			return;
+		}	
+		for(BoxingTeam bt:tournament.getBoxingTeamsList())
+			System.out.println(bt);
+	}
+	public static void printAllVolleyBallTeams(Tournament tournament)
+	{
+		if(tournament.getVolleyBallTeamsList()==null)
+		{
+			System.out.println("No VolleyBall Team is registered yet\n");
+			return;
+		}	
+		for(VolleyBallTeam vt:tournament.getVolleyBallTeamsList())
+			System.out.println(vt);
+	}
 }

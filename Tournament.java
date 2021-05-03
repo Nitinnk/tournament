@@ -10,13 +10,12 @@ public class Tournament {
 	private List<BoxingTeam>boxingTeamsList;
 	private List<VolleyBallTeam>volleyBallTeamsList;
 	private boolean registered=false;
-	private List<IMatch>cricketSchedule;
-	private List<IMatch>boxingSchedule;
-	private List<IMatch>volleyBallSchedule;
 	private LocalDate startDate,cricketDate,boxingDate,volleyBallDate;
+	private CricketSchedule cs;
+	private BoxingSchedule bs;
+	private VolleyBallSchedule vs;
 	private Tournament()
 	{
-		
 	}
 	public static synchronized Tournament getInstance()
 	{
@@ -26,7 +25,11 @@ public class Tournament {
 	}
 	public boolean checkRegistered()
 	{
-		return this.registered;
+		if((this.volleyBallTeamsList==null ||this.volleyBallTeamsList.size()==0) && (this.boxingTeamsList==null || this.boxingTeamsList.size()==0) && (this.cricketTeamsList==null || this.cricketTeamsList.size()==0))
+		{
+			return false;
+		}
+		return true;
 	}
 	public LocalDate getCricketDate() {
 		return cricketDate;
@@ -64,24 +67,6 @@ public class Tournament {
 	public void setVolleyBallTeamsList(List<VolleyBallTeam> volleyBallTeamsList) {
 		this.volleyBallTeamsList = volleyBallTeamsList;
 	}
-	public List<IMatch> getCricketSchedule() {
-		return cricketSchedule;
-	}
-	public void setCricketSchedule(List<IMatch> cricketSchedule) {
-		this.cricketSchedule = cricketSchedule;
-	}
-	public List<IMatch> getBoxingSchedule() {
-		return boxingSchedule;
-	}
-	public void setBoxingSchedule(List<IMatch> boxingSchedule) {
-		this.boxingSchedule = boxingSchedule;
-	}
-	public List<IMatch> getVolleyBallSchedule() {
-		return volleyBallSchedule;
-	}
-	public void setVolleyBallSchedule(List<IMatch> volleyBallSchedule) {
-		this.volleyBallSchedule = volleyBallSchedule;
-	}
 	public void setStartDate(LocalDate date)
 	{
 		this.startDate=startDate;
@@ -89,11 +74,51 @@ public class Tournament {
 		this.setBoxingDate(date);
 		this.setVolleyBallDate(date);
 	}
+	public ISchedule getCricketSchedule()
+	{
+		if(this.cs==null)
+			cs=new CricketSchedule();
+		return cs;
+	}
+	public ISchedule getBoxingSchedule()
+	{
+		if(this.bs==null)
+			bs=new BoxingSchedule();
+		return bs;
+	}
+	public ISchedule getVolleyBallSchedule()
+	{
+		if(this.vs==null)
+			vs=new VolleyBallSchedule();
+		return vs;
+	}
+	public AllMatchesSchedule getAllMatchesSchedule()
+	{
+		return AllMatchesSchedule.getInstance();
+	}
+	public void scheduleAllMatches()
+	{
+		AllMatchesSchedule ams=AllMatchesSchedule.getInstance();
+		ams.setCricketSchedule(this.cs);
+		ams.setBoxingSchedule(this.bs);
+		ams.setVolleyBallSchedule(this.vs);
+	}
+	public ISchedule getCricketScheduleToMain()
+	{
+		return this.cs;
+	}
+	public ISchedule getBoxingScheduleToMain()
+	{
+		return this.bs;
+	}
+	public ISchedule getVolleyBallScheduleToMain()
+	{
+		return this.vs;
+	}
 	public void exit(int teamID)
 	{
 		if(this.volleyBallTeamsList==null && this.boxingTeamsList==null && this.cricketTeamsList==null)
 		{
-			System.out.println("No Team is registered yet\n");
 			return;
 		}
 		if(this.cricketTeamsList!=null)
@@ -201,7 +226,6 @@ public class Tournament {
 	{
 		if(this.cricketTeamsList==null)
 			this.cricketTeamsList=new ArrayList<CricketTeam>(6);
-		this.registered=true;
 		if(this.cricketTeamsList.size()==6)
 		{
 			System.out.println("All slots are filled\nBetter Luck Next Time");
@@ -212,14 +236,13 @@ public class Tournament {
 		{
 			CricketMatch cm=new CricketMatch(this.cricketTeamsList.get(this.cricketTeamsList.size()-2),this.cricketTeamsList.get(this.cricketTeamsList.size()-1),this.cricketDate);
 			this.setCricketDate(this.cricketDate.plusDays(1));
-			this.addCricketSchedule(cm);
+			this.getCricketSchedule().addMatch(cm);
 		}
 	}
 	public void addBoxingTeam(BoxingTeam bt)
 	{
 		if(this.boxingTeamsList==null)
 			this.boxingTeamsList=new ArrayList<BoxingTeam>(6);
-		this.registered=true;
 		if(this.boxingTeamsList.size()==6)
 		{
 			System.out.println("All slots are filled\nBetter Luck Next Time");
@@ -230,14 +253,13 @@ public class Tournament {
 		{
 			BoxingMatch bm=new BoxingMatch(this.boxingTeamsList.get(this.boxingTeamsList.size()-2),this.boxingTeamsList.get(this.boxingTeamsList.size()-1),this.boxingDate);
 			this.setBoxingDate(this.boxingDate.plusDays(1));
-			this.addBoxingSchedule(bm);
+			this.getBoxingSchedule().addMatch(bm);
 		}
 	}
 	public void addVolleyBallTeam(VolleyBallTeam vt)
 	{
 		if(this.volleyBallTeamsList==null)
 			this.volleyBallTeamsList=new ArrayList<VolleyBallTeam>(6);
-		this.registered=true;
 		if(this.volleyBallTeamsList.size()==6)
 		{
 			System.out.println("All slots are filled\nBetter Luck Next Time");
@@ -248,26 +270,7 @@ public class Tournament {
 		{
 			VolleyBallMatch vm=new VolleyBallMatch(this.volleyBallTeamsList.get(this.volleyBallTeamsList.size()-2),this.volleyBallTeamsList.get(this.volleyBallTeamsList.size()-1),this.volleyBallDate);
 			this.setVolleyBallDate(this.volleyBallDate.plusDays(1));
-			this.addVolleyBallSchedule(vm);
+			this.getVolleyBallSchedule().addMatch(vm);
 		}
 	}
-	public void addCricketSchedule(CricketMatch cm)
-	{
-		if(this.cricketSchedule==null)
-			this.cricketSchedule=new ArrayList<IMatch>();
-		this.cricketSchedule.add(cm);
-	}
-	public void addBoxingSchedule(BoxingMatch bm)
-	{
-		if(this.boxingSchedule==null)
-			this.boxingSchedule=new ArrayList<IMatch>();
-		this.boxingSchedule.add(bm);
-	}
-	public void addVolleyBallSchedule(VolleyBallMatch vm)
-	{
-		if(this.volleyBallSchedule==null)
-			this.volleyBallSchedule=new ArrayList<IMatch>();
-		this.volleyBallSchedule.add(vm);
-	}
-	
 }
