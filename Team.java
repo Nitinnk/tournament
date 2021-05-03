@@ -1,7 +1,11 @@
 package tournament;
 
 import java.util.ArrayList;
-
+/**
+ * Team class instance has all the basic details of any particular sport team.
+ * @author Nitin
+ *
+ */
 public class Team implements ITeam{
 	private int id;
 	private int teamSize;
@@ -19,6 +23,9 @@ public class Team implements ITeam{
 	{
 		return "Team Name : "+this.getTeamName()+"\nCaptain Name : "+this.getCaptainName()+"\nID : "+this.getID()+"\n"+"Team Members : "+this.getTeam();
 	}
+	/**
+	 * addMember method is used to add the name of a team member to that instance's teamMembers list.
+	 */
 	@Override
 	public void addMember(String name)
 	{

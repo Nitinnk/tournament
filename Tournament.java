@@ -3,7 +3,12 @@ package tournament;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * Tournament class is a singleton class whose instance has all the details of the tournament. like list of each sport teams, schedules of matches.
+ * This instance is responsible for storing teams list,date and scheduling matches.
+ * @author Nitin
+ *
+ */
 public class Tournament {
 	private static Tournament tournament;
 	private List<CricketTeam>cricketTeamsList;
@@ -22,14 +27,6 @@ public class Tournament {
 		if(tournament==null)
 			tournament=new Tournament();
 		return tournament;
-	}
-	public boolean checkRegistered()
-	{
-		if((this.volleyBallTeamsList==null ||this.volleyBallTeamsList.size()==0) && (this.boxingTeamsList==null || this.boxingTeamsList.size()==0) && (this.cricketTeamsList==null || this.cricketTeamsList.size()==0))
-		{
-			return false;
-		}
-		return true;
 	}
 	public LocalDate getCricketDate() {
 		return cricketDate;
@@ -96,13 +93,6 @@ public class Tournament {
 	{
 		return AllMatchesSchedule.getInstance();
 	}
-	public void scheduleAllMatches()
-	{
-		AllMatchesSchedule ams=AllMatchesSchedule.getInstance();
-		ams.setCricketSchedule(this.cs);
-		ams.setBoxingSchedule(this.bs);
-		ams.setVolleyBallSchedule(this.vs);
-	}
 	public ISchedule getCricketScheduleToMain()
 	{
 		return this.cs;
@@ -115,6 +105,22 @@ public class Tournament {
 	{
 		return this.vs;
 	}
+	/**
+	 * checkRegistered method will check whether any team is playing in the tournament now or not.
+	 * @return boolean
+	 */
+	public boolean checkRegistered()
+	{
+		if((this.volleyBallTeamsList==null ||this.volleyBallTeamsList.size()==0) && (this.boxingTeamsList==null || this.boxingTeamsList.size()==0) && (this.cricketTeamsList==null || this.cricketTeamsList.size()==0))
+		{
+			return false;
+		}
+		return true;
+	}
+	/**
+	 * exit method is used to remove the team whose teamID will be given by the user.
+	 * @param teamID
+	 */
 	public void exit(int teamID)
 	{
 		if(this.volleyBallTeamsList==null && this.boxingTeamsList==null && this.cricketTeamsList==null)
@@ -150,6 +156,11 @@ public class Tournament {
 		}
 		
 	}
+	/**
+	 * isPresent method will check whether any team is present with the given teamID or not.
+	 * @param teamID
+	 * @return boolean
+	 */
 	public boolean isPresent(int teamID)
 	{
 		if(this.volleyBallTeamsList==null && this.boxingTeamsList==null && this.cricketTeamsList==null)
@@ -164,6 +175,11 @@ public class Tournament {
 			return true;
 		return false;
 	}
+	/**
+	 * isPresentInCricketTeam method will check whether any cricket team is present with the given teamID or not.
+	 * @param teamID
+	 * @return
+	 */
 	public boolean isPresentInCricketTeam(int teamID)
 	{
 		if(this.cricketTeamsList==null)
@@ -173,6 +189,11 @@ public class Tournament {
 				return true;
 		return false;
 	}
+	/**
+	 * isPresentInBoxingTeam method will check whether any boxing team is present with the given teamID or not.
+	 * @param teamID
+	 * @return
+	 */
 	public boolean isPresentInBoxingTeam(int teamID)
 	{
 		if(this.boxingTeamsList==null)
@@ -182,6 +203,11 @@ public class Tournament {
 				return true;
 		return false;
 	}
+	/**
+	 * isPresentInVolleyBall Team method will check whether any volleyBall team is present with the given teamID or not.
+	 * @param teamID
+	 * @return
+	 */
 	public boolean isPresentInVolleyBallTeam(int teamID)
 	{
 		if(this.volleyBallTeamsList==null)
@@ -191,6 +217,11 @@ public class Tournament {
 				return true;
 		return false;
 	}
+	/**
+	 *  getCurrentTeam method will return the team with given teamID.
+	 * @param teamID
+	 * @return
+	 */
 	public ITeam getCurrentTeam(int teamID)
 	{
 		if(this.isPresentInCricketTeam(teamID))
@@ -201,6 +232,11 @@ public class Tournament {
 			return this.getCurrentVolleyBallTeam(teamID);
 		return null;
 	}
+	/**
+	 *  getCurrentCricketTeam method will return the cricket team with given teamID.
+	 * @param teamID
+	 * @return
+	 */
 	public ITeam getCurrentCricketTeam(int teamID)
 	{
 		for(CricketTeam ct:this.cricketTeamsList)
@@ -208,6 +244,11 @@ public class Tournament {
 				return ct;
 		return null;
 	}
+	/**
+	 *  getCurrentBoxingTeam method will return the boxing team with given teamID.
+	 * @param teamID
+	 * @return
+	 */
 	public ITeam getCurrentBoxingTeam(int teamID)
 	{
 		for(BoxingTeam ct:this.boxingTeamsList)
@@ -215,6 +256,11 @@ public class Tournament {
 				return ct;
 		return null;
 	}
+	/**
+	 *  getCurrentVolleyBallTeam method will return the volley ball team with given teamID.
+	 * @param teamID
+	 * @return
+	 */
 	public ITeam getCurrentVolleyBallTeam(int teamID)
 	{
 		for(VolleyBallTeam ct:this.volleyBallTeamsList)
@@ -222,6 +268,11 @@ public class Tournament {
 				return ct;
 		return null;
 	}
+	/**
+	 * addCricketTeam method will add the given cricket team to the cricketteamslist.
+	 * It also schedules matches between two consecutive cricket teams and adds that match to the cricket schedule.
+	 * @param ct
+	 */
 	public void addCricketTeam(CricketTeam ct)
 	{
 		if(this.cricketTeamsList==null)
@@ -238,7 +289,11 @@ public class Tournament {
 			this.setCricketDate(this.cricketDate.plusDays(1));
 			this.getCricketSchedule().addMatch(cm);
 		}
-	}
+	}/**
+	 * addBoxxingTeam method will add the given boxing team to the boxingteamslist.
+	 * It also schedules matches between two consecutive boxing teams and adds that match to the boxing schedule.
+	 * @param bt
+	 */
 	public void addBoxingTeam(BoxingTeam bt)
 	{
 		if(this.boxingTeamsList==null)
@@ -256,6 +311,11 @@ public class Tournament {
 			this.getBoxingSchedule().addMatch(bm);
 		}
 	}
+	/**
+	 * addVolleyBallTeam method will add the given VolleyBall team to the VolleyBallteamslist.
+	 * It also schedules matches between two consecutive VolleyBall teams and adds that match to the VolleyBall schedule.
+	 * @param vt
+	 */
 	public void addVolleyBallTeam(VolleyBallTeam vt)
 	{
 		if(this.volleyBallTeamsList==null)
@@ -272,5 +332,15 @@ public class Tournament {
 			this.setVolleyBallDate(this.volleyBallDate.plusDays(1));
 			this.getVolleyBallSchedule().addMatch(vm);
 		}
+	}
+	/**
+	 * scheduleAllMatches method will add all the sport schedules to the AllMatchesSchedule instance.
+	 */
+	public void scheduleAllMatches()
+	{
+		AllMatchesSchedule ams=AllMatchesSchedule.getInstance();
+		ams.setCricketSchedule(this.cs);
+		ams.setBoxingSchedule(this.bs);
+		ams.setVolleyBallSchedule(this.vs);
 	}
 }

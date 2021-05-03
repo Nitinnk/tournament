@@ -1,7 +1,11 @@
 package tournament;
 
 import java.time.LocalDate;
-
+/**
+ * Match class has two opponent teams and the date on which their match is scheduled.
+ * @author Nitin
+ *
+ */
 public class Match implements IMatch{
 	private ITeam A,B;
 	private LocalDate date;

@@ -1,7 +1,11 @@
 package tournament;
 
 import java.util.List;
-
+/**
+ * AllMatchesSchedule class has the schedules of all the matches of three sports.
+ * @author Nitin
+ *
+ */
 public class AllMatchesSchedule {
 	private static AllMatchesSchedule ams;
 	private CricketSchedule cricketSchedule;
@@ -34,6 +38,11 @@ public class AllMatchesSchedule {
 	public void setVolleyBallSchedule(VolleyBallSchedule volleyBallSchedule) {
 		this.volleyBallSchedule = volleyBallSchedule;
 	}
+	/**
+	 * checkTeamPresence method will check whether the team with the given teamID is scheduled for a match or not.
+	 * @param teamID
+	 * @return
+	 */
 	public boolean checkTeamPresence(int teamID)
 	{
 		if(this.getCricketSchedule()!=null)

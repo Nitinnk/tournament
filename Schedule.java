@@ -12,6 +12,10 @@ public class Schedule implements ISchedule{
 			this.matches=new ArrayList<IMatch>();
 		this.matches.add(match);
 	}
+	/**
+	 * getMatchList returns the list of all the matches that have been added.
+	 * @return
+	 */
 	public List<IMatch> getMatchList()
 	{
 		return this.matches;
